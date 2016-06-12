@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> <%= title %> </title>
+	<link rel='stylesheet', href='/stylesheets/style.css'>	
+</head>
+<body>
+	<!--  <script src="/javascripts/upload.js"></script> -->		
+	<div id='root'>		
+		<img src="/images/folder_open.jpg" height=30 width=30> 
+		<%= rootfolder %>			
+	</div>
+	<form enctype="multipart/form-data" method="post" id='upload'>
+		<input type="file" name="file"  id='fileinput'>
+		<input type="submit" value="Отправить">			
+	</form> 
+	<script>
+		document.getElementById('fileinput').onchange = function(){			
+			var upload = document.getElementById('upload');
+			var val = this.value.toString();
+			var arg = val.split('\\');
+			var file = arg[arg.length - 1];
+			upload.setAttribute('action', file);
+		}
+	</script>
+	<div id="progress"></div>
+	<% if (folders) { %>
+	<div id='folders'>
+		<% for(var i=0; i<folders.length; i++) { %>
+		<div class='folder'>			
+			<% var str = folders[i] + '/' %>
+			<a href= <%= str %> >
+				<img src="/images/folder.jpg" height=30 width=30>
+				<%= folders[i] %>
+			</a>
+		</div>
+		<% } %>
+		<% } %>
+	</div>
+
+	<% if (files) { %>	
+	<div id='files'>
+		<% for(var i=0; i<files.length; i++) { %>
+		<div class='file'>
+			<% var str = '/download/' + files[i].fullname %>
+			<a href= <%= str %> download>
+				<img src="/images/file.jpg" height=30 width=30>
+				<%= files[i].name %>
+			</a>
+		</div>
+		<% } %>
+		<% } %>
+	</div>
+
+</body>
+</html>

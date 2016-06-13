@@ -11,7 +11,7 @@ nconf.argv()
 
 nconf.set("address:port", nconf.get("hostPort"));
 nconf.set("address:host", nconf.get('hostAddr'));
-nconf.set("rootfolder", path.normalize(__dirname + '/../'));
+nconf.set("rootfolder", path.normalize("D:/share_folder"));
 
 debug(nconf.get('address'));
 debug(nconf.get('rootfolder'));

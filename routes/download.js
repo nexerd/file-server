@@ -10,7 +10,12 @@ router.get('/*', function(req, res, next) {
 	debug(req.params);
 	var filename = req.params[0];
 	filename = path.normalize(filename);
-	fs.createReadStream(filename).pipe(res);
+	try{
+		fs.createReadStream(filename).pipe(res);
+	}
+	catch(err){
+		next(err);
+	}
 });
 
 module.exports = router;

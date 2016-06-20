@@ -61,6 +61,11 @@ a {
 	display: inline-block;
 }
 
+#upload-file {
+  margin-left: 120px;
+  margin-right: 120px;
+}
+
 #upload-form {
-	margin-left: 120px;
+  visibility: hidden;
 }

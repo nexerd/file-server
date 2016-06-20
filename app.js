@@ -23,8 +23,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/download', download);
-app.use('/', upload);
 app.use('/', folder);
+app.use('/', upload);
+
 
 
 // catch 404 and forward to error handler

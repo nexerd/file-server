@@ -6,7 +6,6 @@ var config = require('../config');
 var async = require("async");
 var path = require("path");
 
-/* GET users listing. */
 router.post('/*', function(req, res, next) {	
 	var rootfolder = config.get('rootfolder');
 	var filename = req.params[0];

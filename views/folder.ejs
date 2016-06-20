@@ -7,24 +7,54 @@
 <body>
 	<!--  <script src="/javascripts/upload.js"></script> -->		
 	<div id='root'>		
-		<img src="/images/folder_open.jpg" height=30 width=30> 
-		<%= rootfolder %>				
+		<img src="/images/folder_open.png" height=30 width=30> 
+		<%= rootfolder %>			
+		<div id='upload-file'>
+			<img src="/images/upload_file.png" height=30 width=30>
+		</div>
+		<div id='create-folder'>
+			<img src="/images/create_folder.png" height=30 width=30>
+		</div>
 		<div id='upload-form'>
 			<form enctype="multipart/form-data" method="post" id='upload'>
-				<input type="file" name="file"  id='fileinput'>
-				<input type="submit" value="Отправить">			
-			</form> 
-			<script>
-				document.getElementById('fileinput').onchange = function(){			
-					var upload = document.getElementById('upload');
-					var val = this.value.toString();
-					var arg = val.split('\\');
-					var file = arg[arg.length - 1];
-					upload.setAttribute('action', file);
-				}
-			</script>
+				<input type="file" name="file"  id='fileinput'>		
+			</form> 			
 			<div id="progress"></div>
 		</div>
+		<!--
+		<div id='create-fodler-form'>
+			<form enctype="multipart/form-data" method="post" id='createfolder' action="folder/">	
+			</form> 
+		</div>
+		-->
+		<script>
+				document.getElementById('create-folder').onclick = function(){			
+					//document.getElementById('createfolder').submit();
+					var name = prompt("Please, enter the folder's name:"); 
+					var xhr = new XMLHttpRequest();
+					xhr.open('POST', '/folder', true);
+					xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');				
+					var json = JSON.stringify({
+					  folder: window.location.pathname,
+					  name: name
+					});
+					xhr.send(json);
+					xhr.onreadystatechange = function() {
+						window.location.href = xhr.responseText;
+					}
+				}
+
+				document.getElementById('upload-file').onclick = function(){			
+					document.getElementById('fileinput').click();
+				}
+
+				document.getElementById('fileinput').onchange = function(){			
+					var upload = document.getElementById('upload');
+					var file = this.files[0].name;
+					upload.setAttribute('action', window.location.pathname + '/' + file);
+					document.getElementById('upload').submit();
+				}
+		</script>
 	</div>
 	<div id='content'>	
 		<% if (folders) { %>
@@ -33,7 +63,7 @@
 				<div class='folder'>			
 					<% var str = folders[i] + '/' %>
 					<a href= <%= str %> >
-						<img src="/images/folder.jpg" height=30 width=30>
+						<img src="/images/folder.png" height=30 width=30>
 						<div class='foldername'>
 							<%= folders[i] %>
 						</div>
@@ -49,7 +79,7 @@
 				<div class='file'>
 					<% var str = "/download/" + files[i].fullname %>
 					<a href= <%= str %> download>
-						<img src="/images/file.jpg" height=30 width=30>
+						<img src="/images/file.png" height=30 width=30>
 						<div class='filename'>
 							<%= files[i].name %>
 						</div>

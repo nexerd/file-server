@@ -37,6 +37,23 @@ router.get('/*', function(req, res, next) {
 	next);
 });
 
+router.post('/folder/', function(req, res, next){
+	var Folder = req.body.folder;
+	var Name = req.body.name;	
+	Folder = path.join(config.get('rootfolder'), Folder, Name);
+	fs.mkdir(Folder, (err) => {
+		if (err){
+			next(err);
+			return;
+		}
+		debug('Create new folder ' + Name);
+		var url = path.join(req.body.folder , Name);
+		url = url.replace(/\\/g, '/');		
+		res.send(url);
+	});
+});
+
+
 module.exports = router;
 
 

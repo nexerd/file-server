@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var debug = require("../debug")("file-server:download");
 var fs = require('fs');
-var async = require("async");
 var path = require("path");
 
 /* GET users listing. */

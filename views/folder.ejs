@@ -28,9 +28,13 @@
 		</div>
 		-->
 		<script>
-				document.getElementById('create-folder').onclick = function(){			
-					//document.getElementById('createfolder').submit();
+				document.getElementById('create-folder').onclick = function(){						
 					var name = prompt("Please, enter the folder's name:"); 
+					if (name == '')
+					{
+						alert('Bad name!');
+						return;
+					}
 					var xhr = new XMLHttpRequest();
 					xhr.open('POST', '/folder', true);
 					xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');				
@@ -51,9 +55,51 @@
 				document.getElementById('fileinput').onchange = function(){			
 					var upload = document.getElementById('upload');
 					var file = this.files[0].name;
-					upload.setAttribute('action', window.location.pathname + '/' + file);
+					upload.setAttribute('action', '/upload/' +  window.location.pathname + '/' + file);
 					document.getElementById('upload').submit();
 				}
+				window.onload = function() { 
+
+				var renames = document.getElementsByClassName('Rename');
+				for (var i = 0; i < renames.length; i++)
+					renames[i].onclick = function(){			
+						var name = prompt("Please, enter the new files's name:"); 
+						if (name === '')
+						{
+							alert('Bad name!');
+							return;
+						}
+						var file = this.parentNode.getAttribute('id');
+						var xhr = new XMLHttpRequest();
+						xhr.open('POST', '/file/rename/', true);
+						xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');				
+						var json = JSON.stringify({
+						  file: file,
+						  name: name
+						});
+						xhr.send(json);
+						xhr.onreadystatechange = function() {
+							window.location.href = xhr.responseText;
+						}
+					}
+
+				var deletes = document.getElementsByClassName('Delete');
+				for (var i = 0; i < deletes.length; i++)
+					deletes[i].onclick = function(){	
+						var file = this.parentNode.getAttribute('id');
+						var xhr = new XMLHttpRequest();
+						xhr.open('DELETE', '/file/delete/', true);
+						xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');				
+						var json = JSON.stringify({
+						  file: file
+						});
+						xhr.send(json);
+						xhr.onreadystatechange = function() {
+							window.location.href = xhr.responseText;
+						}
+					}
+				}
+
 		</script>
 	</div>
 	<div id='content'>	
@@ -76,14 +122,31 @@
 			<% if (files) { %>	
 			<div id='files'>
 				<% for(var i=0; i<files.length; i++) { %>
-				<div class='file'>
+				<div class='file' id= <%= files[i].fullname %> >
 					<% var str = "/download/" + files[i].fullname %>
 					<a href= <%= str %> download>
 						<img src="/images/file.png" height=30 width=30>
 						<div class='filename'>
 							<%= files[i].name %>
-						</div>
+						</div>						
 					</a>
+					<div class="action" id="Download">
+						<a href= <%= str %> >
+							Download
+						</a>
+					</div>
+					<div class="Rename">
+						Rename
+					</div>
+					<div class="Copy">
+						Copy
+					</div>
+					<div class="Cut">
+						Copy
+					</div>
+					<div class="Delete">
+						Delete
+					</div>
 				</div>
 				<% } %>
 			<% } %>

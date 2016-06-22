@@ -3,7 +3,6 @@ var router = express.Router();
 var debug = require("../debug")("file-server:upload");
 var fs = require('fs');
 var config = require('../config');
-var async = require("async");
 var path = require("path");
 
 router.post('/*', function(req, res, next) {	

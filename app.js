@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var folder = require('./routes/folder');
 var download = require('./routes/download');
 var upload = require('./routes/upload');
+var file = require('./routes/file');
 
 var app = express();
 
@@ -23,8 +24,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/download', download);
+app.use('/upload', upload);
+app.use('/file', file);
 app.use('/', folder);
-app.use('/', upload);
+
 
 
 
